@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import VoiceAgent from './VoiceAgent';
 import './App.css';
 
 // Backend port may vary (e.g., :5000 can be taken by macOS AirPlay/AirTunes),
@@ -8,7 +7,6 @@ import './App.css';
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
 
 function App() {
-  const [activeTab, setActiveTab] = useState('pricing');
   const [inputs, setInputs] = useState({
     spot: 100,
     strike: 100,
@@ -115,27 +113,8 @@ function App() {
       <header className="App-header">
         <h1>Black-Scholes Option Pricing Platform</h1>
         <p>Real-time European option pricing with Greeks analysis</p>
-        <nav className="app-nav">
-          <button
-            type="button"
-            className={activeTab === 'pricing' ? 'active' : ''}
-            onClick={() => setActiveTab('pricing')}
-          >
-            Option Pricing
-          </button>
-          <button
-            type="button"
-            className={activeTab === 'voice' ? 'active' : ''}
-            onClick={() => setActiveTab('voice')}
-          >
-            AI Voice Agent
-          </button>
-        </nav>
       </header>
 
-      {activeTab === 'voice' ? (
-        <VoiceAgent />
-      ) : (
       <div className="container">
         <div className="input-section">
           <h2>Input Parameters</h2>
@@ -274,7 +253,6 @@ function App() {
           </>
         )}
       </div>
-      )}
     </div>
   );
 }
