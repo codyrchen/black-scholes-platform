@@ -7,7 +7,6 @@ from spectree import SpecTree
 from backend.config import Settings
 from backend.errors import ApiError, handle_api_error, handle_uncaught_exception
 from backend.routes import api_v1, calculate_payoff_v1, calculate_price_v1
-from backend.voice_routes import voice_bp
 
 
 def create_app(settings: Settings | None = None) -> Flask:
@@ -33,7 +32,6 @@ def create_app(settings: Settings | None = None) -> Flask:
 
     # Routes
     app.register_blueprint(api_v1, url_prefix=settings.api_prefix)
-    app.register_blueprint(voice_bp, url_prefix=f"{settings.api_prefix}/voice")
 
     # Legacy (non-versioned) routes kept for compatibility with existing frontend.
     # These call through to the v1 implementation.
