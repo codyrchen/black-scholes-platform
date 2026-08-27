@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+.venv/
+venv/
+env/
+
+# Secrets
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Frontend build
+frontend/build/
+frontend/.cache/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+*.log
