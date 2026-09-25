@@ -7,10 +7,6 @@ A full-stack European option pricing platform with a Flask API and a React dashb
 | `backend/` | Flask + Pydantic + SpecTree | Black-Scholes pricing, Greeks, payoff curves, OpenAPI docs |
 | `frontend/` | React 18 + Recharts | Pricing dashboard |
 
-> The AI voice agent that used to live here now has its own repo:
-> [`codyrchen/ai-voice-agent`](https://github.com/codyrchen/ai-voice-agent). It never depended on
-> option pricing, so it was split out.
-
 ## Features
 
 - Analytic Black-Scholes prices for European calls and puts (no SciPy dependency — the normal
