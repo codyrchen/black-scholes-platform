@@ -12,7 +12,7 @@ class Settings:
     cors_origins: list[str]
 
     @staticmethod
-    def from_env() -> "Settings":
+    def from_env() -> Settings:
         port = int(os.getenv("PORT", "5001"))
         host = os.getenv("HOST", "0.0.0.0")
         api_prefix = os.getenv("API_PREFIX", "/api/v1")

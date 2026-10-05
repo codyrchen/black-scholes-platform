@@ -1,84 +1,51 @@
+"""API-facing helpers built on the ``quant`` library."""
+
 from __future__ import annotations
 
-import math
-from dataclasses import dataclass
+import numpy as np
+
+from quant.black_scholes import greeks as bs_greeks
+from quant.black_scholes import price as bs_price
 
 
-def _norm_pdf(x: float) -> float:
-    return math.exp(-0.5 * x * x) / math.sqrt(2.0 * math.pi)
-
-
-def _norm_cdf(x: float) -> float:
-    # Standard normal CDF via error function (no SciPy dependency).
-    return 0.5 * (1.0 + math.erf(x / math.sqrt(2.0)))
-
-
-@dataclass(frozen=True)
-class Inputs:
-    spot: float
-    strike: float
-    maturity: float
-    rate: float
-    volatility: float
-    option_type: str  # "call" | "put"
-
-
-def _d1_d2(S: float, K: float, T: float, r: float, sigma: float) -> tuple[float, float]:
-    d1 = (math.log(S / K) + (r + 0.5 * sigma * sigma) * T) / (sigma * math.sqrt(T))
-    d2 = d1 - sigma * math.sqrt(T)
-    return d1, d2
-
-
-def price(inp: Inputs) -> float:
-    d1, d2 = _d1_d2(inp.spot, inp.strike, inp.maturity, inp.rate, inp.volatility)
-    S, K, T, r = inp.spot, inp.strike, inp.maturity, inp.rate
-
-    if inp.option_type == "call":
-        return S * _norm_cdf(d1) - K * math.exp(-r * T) * _norm_cdf(d2)
-    return K * math.exp(-r * T) * _norm_cdf(-d2) - S * _norm_cdf(-d1)
-
-
-def greeks(inp: Inputs) -> dict[str, float]:
-    d1, d2 = _d1_d2(inp.spot, inp.strike, inp.maturity, inp.rate, inp.volatility)
-    S, K, T, r, sigma = inp.spot, inp.strike, inp.maturity, inp.rate, inp.volatility
-
-    if inp.option_type == "call":
-        delta = _norm_cdf(d1)
-    else:
-        delta = _norm_cdf(d1) - 1.0
-
-    gamma = _norm_pdf(d1) / (S * sigma * math.sqrt(T))
-
-    if inp.option_type == "call":
-        theta = (-S * _norm_pdf(d1) * sigma / (2 * math.sqrt(T)) - r * K * math.exp(-r * T) * _norm_cdf(d2)) / 365.0
-        rho = K * T * math.exp(-r * T) * _norm_cdf(d2) / 100.0
-    else:
-        theta = (-S * _norm_pdf(d1) * sigma / (2 * math.sqrt(T)) + r * K * math.exp(-r * T) * _norm_cdf(-d2)) / 365.0
-        rho = -K * T * math.exp(-r * T) * _norm_cdf(-d2) / 100.0
-
-    vega = S * _norm_pdf(d1) * math.sqrt(T) / 100.0
-
+def quoted_greeks(S, K, T, r, sigma, q, kind) -> dict[str, float]:
+    """Greeks in trader quoting units: theta per calendar day, vega and rho per 1% move."""
+    g = bs_greeks(S, K, T, r, sigma, q, kind)
     return {
-        "delta": round(delta, 4),
-        "gamma": round(gamma, 4),
-        "theta": round(theta, 4),
-        "vega": round(vega, 4),
-        "rho": round(rho, 4),
+        "delta": g["delta"],
+        "gamma": g["gamma"],
+        "theta": g["theta"] / 365.0,
+        "vega": g["vega"] / 100.0,
+        "rho": g["rho"] / 100.0,
     }
 
 
-def payoff_curve(strike: float, premium: float, option_type: str, points: int = 100) -> list[dict[str, float]]:
-    # Mimic previous behavior: spot from 0.5K..1.5K
-    start = strike * 0.5
-    end = strike * 1.5
-    step = (end - start) / (points - 1)
-    out: list[dict[str, float]] = []
-    for i in range(points):
-        S = start + step * i
-        if option_type == "call":
-            payoff = max(S - strike, 0.0) - premium
-        else:
-            payoff = max(strike - S, 0.0) - premium
-        out.append({"spot": round(S, 2), "payoff": round(payoff, 2)})
-    return out
+def payoff_curve(
+    strike: float,
+    premium: float,
+    option_type: str,
+    points: int = 100,
+    maturity: float | None = None,
+    rate: float = 0.0,
+    volatility: float | None = None,
+    dividend_yield: float = 0.0,
+) -> list[dict[str, float]]:
+    """P&L of a long option over spot from 0.5K to 1.5K.
 
+    ``payoff`` is the P&L at expiry. When ``maturity`` and ``volatility`` are
+    given, ``value`` is the P&L today (Black-Scholes value minus premium).
+    """
+    spots = np.linspace(0.5 * strike, 1.5 * strike, points)
+    sign = 1.0 if option_type == "call" else -1.0
+    payoffs = np.maximum(sign * (spots - strike), 0.0) - premium
+    values = None
+    if maturity is not None and volatility is not None:
+        values = bs_price(spots, strike, maturity, rate, volatility, dividend_yield, option_type) - premium
+
+    out = []
+    for i, s in enumerate(spots):
+        point = {"spot": round(float(s), 2), "payoff": round(float(payoffs[i]), 4)}
+        if values is not None:
+            point["value"] = round(float(values[i]), 4)
+        out.append(point)
+    return out
