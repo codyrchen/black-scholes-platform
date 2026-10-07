@@ -2,11 +2,13 @@
 """
 Quick test script to verify the Flask backend is running and accessible
 """
-import requests
-import sys
 import os
+import sys
 
-def test_backend():
+import requests
+
+
+def check_backend():
     base = os.getenv("BACKEND_URL", "http://localhost:5001")
     url = f"{base}/api/health"
     print(f"Testing backend connection at {url}...")
@@ -35,5 +37,5 @@ def test_backend():
         return False
 
 if __name__ == "__main__":
-    success = test_backend()
+    success = check_backend()
     sys.exit(0 if success else 1)

@@ -1,0 +1,15 @@
+# Render blueprint for the API. In the Render dashboard: New > Blueprint > this repo.
+services:
+  - type: web
+    name: options-trainer-api
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn -w 2 -b 0.0.0.0:$PORT "backend:create_app()"
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      # Set to your frontend's URL, e.g. https://options-trainer.vercel.app
+      - key: CORS_ORIGINS
+        sync: false

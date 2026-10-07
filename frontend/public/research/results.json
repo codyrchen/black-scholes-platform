@@ -1,0 +1,73 @@
+{
+  "convergence": {
+    "american_put": 8.7408,
+    "bs_price": 8.0214,
+    "crr_error_at_1000": 0.0011597613700313758,
+    "crr_slope": -1.069,
+    "early_exercise_premium": 0.8404,
+    "european_put": 7.9004,
+    "mc_price_1m": 8.0205,
+    "mc_slope": -0.491,
+    "mc_stderr_1m": 0.00285,
+    "params": {
+      "K": 105.0,
+      "S": 100.0,
+      "T": 1.0,
+      "r": 0.05,
+      "sigma": 0.2
+    },
+    "variance_reduction_factor": 21.5
+  },
+  "hedging": {
+    "frequency": {
+      "daily_std_pct_of_premium": 10.1,
+      "premium": 4.2322,
+      "slope": -0.489,
+      "std": [
+        1.6182,
+        1.186,
+        0.8483,
+        0.6023,
+        0.4288,
+        0.3054,
+        0.2191,
+        0.1536
+      ],
+      "steps": [
+        4,
+        8,
+        16,
+        32,
+        63,
+        126,
+        252,
+        504
+      ]
+    },
+    "params": {
+      "K": 100.0,
+      "S": 100.0,
+      "T": 0.25,
+      "implied_vol": 0.2,
+      "paths": 10000,
+      "r": 0.02
+    },
+    "vol_mismatch": {
+      "10": {
+        "mean": 1.9968,
+        "std": 0.548,
+        "vega_prediction": 1.9848
+      },
+      "20": {
+        "mean": 0.0012,
+        "std": 0.4369,
+        "vega_prediction": 0.0
+      },
+      "30": {
+        "mean": -1.9958,
+        "std": 1.1145,
+        "vega_prediction": -1.9848
+      }
+    }
+  }
+}
