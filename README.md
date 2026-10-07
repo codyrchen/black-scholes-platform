@@ -2,8 +2,8 @@
 
 [![CI](https://github.com/codyrchen/black-scholes-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/codyrchen/black-scholes-platform/actions/workflows/ci.yml)
 
-Free practice for options questions in quant interviews: timed drills, an interactive Greeks lab and a
-delta-hedging game. Underneath is a tested pricing library (Black-Scholes-Merton, implied vol, binomial trees,
+Free practice for options questions in quant interviews: timed drills, an interactive Greeks lab, a
+market-making game and a delta-hedging game. Underneath is a tested pricing library (Black-Scholes-Merton, implied vol, binomial trees,
 Monte Carlo, hedging simulation). Every drill answer is computed by that library and checked by its tests.
 
 **Live site:** https://black-scholes-platform.vercel.app
@@ -13,6 +13,7 @@ Monte Carlo, hedging simulation). Every drill answer is computed by that library
 | **Drills** | Timed rounds: ATM ≈ 0.4·σ·√T·S, straddle pricing, the rule of 16, forwards, put-call parity, Greek signs and scaling, delta-hedge sizing, BS price/delta/IV, and parity, vertical and butterfly arbitrage. Shareable challenge links replay the same questions. |
 | **Greeks Lab** | Sliders for spot, strike, time, vol, rates and dividends, with live charts of every Greek against spot and time. A predict-then-reveal mode trains intuition. |
 | **Hedging Game** | Sell an option and delta hedge it yourself; compare against the Black-Scholes hedger and no hedge, then run 14,000 simulations to see why the error scales like 1/√N. |
+| **Market Making** | The trading-firm interview game: quote a bid and ask on the sum of three cards while an informed trader who has seen a hidden card tries to pick you off. Scored against a textbook market maker, with replayable challenge links. Runs fully in the browser. |
 | **Learn** | Research notes whose charts and numbers come from the scripts in `research/`. |
 | **Calculator** | Price, Greeks, implied vol, and today-vs-expiry P&L. |
 
@@ -47,7 +48,8 @@ From `research/` (rerun the scripts to regenerate the charts and the numbers on 
 - **Drills:** every generated question accepts its own answer, and the mental-math shortcut quoted in each
   explanation is within the grading tolerance; all arbitrage answer types occur; ids round-trip deterministically.
 - **Vol smile:** the forward and discount factor are recovered from a synthetic chain with a known smile.
-- **Frontend:** the browser's JS pricer matches golden values from the Python library.
+- **Frontend:** the browser's JS pricer matches golden values from the Python library; the market-making game's
+  fair values match a brute-force expectation over the remaining deck.
 
 ## Methods
 

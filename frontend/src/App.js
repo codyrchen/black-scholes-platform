@@ -7,11 +7,13 @@ import GreeksLab from './pages/GreeksLab';
 import HedgingGame from './pages/HedgingGame';
 import Home from './pages/Home';
 import Learn from './pages/Learn';
+import MarketMaking from './pages/MarketMaking';
 
 const NAV = [
   ['/drills', 'Drills'],
   ['/greeks', 'Greeks Lab'],
   ['/hedging', 'Hedging Game'],
+  ['/market-making', 'Market Making'],
   ['/learn', 'Learn'],
   ['/calculator', 'Calculator'],
 ];
@@ -35,7 +37,7 @@ function ApiStatus() {
   return (
     <div className="banner banner-error" role="alert">
       <span aria-hidden="true">⚠</span> The API isn't reachable. Drills, the hedging game and the calculator
-      need it; the Greeks Lab and Learn pages work offline.
+      need it; the Greeks Lab, Market Making and Learn pages work offline.
     </div>
   );
 }
@@ -62,6 +64,7 @@ export default function App() {
           <Route path="/drills" element={<Drills />} />
           <Route path="/greeks" element={<GreeksLab />} />
           <Route path="/hedging" element={<HedgingGame />} />
+          <Route path="/market-making" element={<MarketMaking />} />
           <Route path="/learn" element={<Learn />} />
           <Route path="/learn/:slug" element={<Learn />} />
           <Route path="/calculator" element={<Calculator />} />
