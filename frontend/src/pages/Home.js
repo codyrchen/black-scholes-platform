@@ -14,6 +14,11 @@ const MODES = [
     body: 'Drag spot, vol and time and watch every Greek respond. Predict the direction first, then check.',
   },
   {
+    to: '/market-making',
+    title: 'Market Making',
+    body: 'The trading-firm interview game: quote a bid and ask on the sum of three cards while informed traders try to pick you off.',
+  },
+  {
     to: '/hedging',
     title: 'Hedging Game',
     body: 'Sell an option and delta hedge it yourself, step by step. See why hedging error shrinks like 1/√N and what happens when realized vol differs from implied.',
@@ -26,9 +31,9 @@ export default function Home() {
   return (
     <>
       <section className="hero">
-        <h1>Practice options intuition for quant interviews</h1>
+        <h1>Practice options and market making for quant interviews</h1>
         <p>
-          Free drills, interactive Greeks and a delta-hedging game. Every answer is computed by a tested
+          Free drills, interactive Greeks, a market-making game and a delta-hedging game. Every answer is computed by a tested
           Black-Scholes library, not typed into an answer key.
         </p>
         <div className="row">
@@ -58,7 +63,7 @@ export default function Home() {
           </div>
         )}
       </section>
-      <section className="grid-3">
+      <section className="grid-modes">
         {MODES.map((m) => (
           <Link key={m.to} to={m.to} className="card card-link">
             <h3>{m.title}</h3>
