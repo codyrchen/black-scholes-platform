@@ -1,3 +1,3 @@
 {
-  "rewrites": [{ "source": "/((?!research/|static/).*)", "destination": "/index.html" }]
+  "rewrites": [{ "source": "/((?!research/|static/|_vercel/).*)", "destination": "/index.html" }]
 }
