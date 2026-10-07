@@ -6,7 +6,7 @@ Free practice for options questions in quant interviews: timed drills, an intera
 delta-hedging game. Underneath is a tested pricing library (Black-Scholes-Merton, implied vol, binomial trees,
 Monte Carlo, hedging simulation). Every drill answer is computed by that library and checked by its tests.
 
-**Live site:** _add your deployed URL here_
+**Live site:** https://black-scholes-platform.vercel.app
 
 | Mode | What you practice |
 | --- | --- |
